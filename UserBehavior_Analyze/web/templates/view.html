@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset = "utf-8">
+	<title>淘宝数据分析可视化</title>
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/echarts/3.6.2/echarts.min.js"></script>
+	<script src="https://echarts-www.cdn.bcebos.com/zh/asset/theme/macarons.js"></script>
+
+    <style type="text/css">
+        body {
+            background-image: url("/static/timg.jpg");
+			#background-color: rgba(47, 47, 47, 0.945)!important;#黑色背景
+			#background-color:'#111f2c';
+        }
+        
+        h1 {
+            color: #fff;
+        }
+        
+        #action_box,
+        #top_10_item_box,
+        #top_10_user_box,
+        #buy_order_by_data_box
+
+		{
+            background-color: rgba(230, 255, 255, 0.945)!important;
+            display: inline-block; #设置行内块元素
+        }
+        
+        .contain {
+            text-align: center;
+        }
+        
+        .public {
+            width: 600px;
+            height: 500px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 3px #aaa inset; #设置内部阴影
+        }
+        
+        .empty {
+            height: 30px;  #距离窗口顶部距离
+        }
+    </style>
+</head>
+
+<body>
+    <h1 align="center">Spark淘宝数据分析可视化图表</h1>
+    <div class="empty"></div>
+    <div class="contain">
+        <div id="action_box" class="public"></div>
+        <div id="top_10_item_box" class="public"></div>
+        <div id="top_10_user_box" class="public"></div>
+        <div id="buy_order_by_data_box" class="public"></div>
+    </div>
+</body>
+
+
+<script type="text/javascript">
+
+		
+	$.getJSON("/static/result1.json", function(data){
+		var name = []
+		var value = []
+		$.each(data, function(key, val){
+			name.push(val["action"]);
+			if(val["action"] == "buy"){
+				val["action"] = "购买"
+			}else if(val["action"] == "fav"){
+				        val["action"] = "收藏商品"			
+				    }else if(val["action"] == "cart"){
+						    val["action"] = "入购物车"			
+					       }
+						    else if(val["action"] == "pv"){
+						        val["action"] = "点击"			
+					         }
+			value.push({
+				"value": val["count"],
+				"name": val["action"]
+			})
+		});
+		var action_chart = echarts.init(document.getElementById('action_box'), "macarons");
+
+	
+		//指定图表的配置项和数据
+		var option1 = {
+			backgroundColor: '#111f2c',
+			/*
+			title: {
+				text: '所有买家消费行为比例图',
+				left: 'center',
+				top: 20,
+				textStyle: {
+					color: '#555555'
+				}
+			},
+			*/
+			title: {
+                text: '用户购物行为漏斗图',
+				top: 20,
+                x: 'center'
+            },
+			tooltip: {//数据视图
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c}人"
+            },
+			toolbox: {//还原数据
+                feature: {
+                    dataView: {
+                        readOnly: false
+                    },
+                    restore: {},
+                    saveAsImage: {}//保存当前漏斗图
+                }
+            },
+			series: [{
+                name: '漏斗图',
+                type: 'funnel',
+                left: '10%',
+                top: 80,
+                bottom: 40,
+                width: '76%',
+                min: 0,
+                max: 100,
+                minSize: '0%', //数据最小值 min 映射的宽度，默认为0%
+                maxSize: '100%', //绝对的像素大小，也可以是相对布局宽度的百分比
+                sort: 'descending',
+                gap: 2,
+                label: {
+                    show: true,
+                    position: 'inside'
+                },
+                labelLine: {
+                    length: 10,
+                    lineStyle: {
+                        width: 1,
+                        type: 'solid'
+                    }
+                },
+                itemStyle: {
+                    borderColor: '#fff',
+                    borderWidth: 1
+                },
+                emphasis: {
+                    label: {
+                        fontSize: 20
+                    }
+                },
+                data: value
+            }]
+
+		};
+		action_chart.setOption(option1);
+	})
+</script>
+
+
+<script type="text/javascript">
+
+		
+	$.getJSON("/static/result2.json", function(data){
+		
+
+	    var name = []
+		var value = []
+		$.each(data, function(key, val){
+			name.push(val["_1"]);
+			value.push({
+				"value": val["_2"],
+				"name": val["_1"]
+			})
+		});
+		dataAxis = Object.values(name);
+        dataValue = Object.values(value);
+		var item_chart = echarts.init(document.getElementById('top_10_item_box'), "macarons");
+
+	
+		//指定图表的配置项和数据
+		var option2 = {
+            title: {
+                text: '商品销量前十统计图',
+				top: 20,
+                x: "center"
+            },
+            tooltip: {//数据视图
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c}件"
+            },
+			toolbox: {//还原数据
+                feature: {
+                    dataView: {
+                        readOnly: false
+                    },
+                    restore: {},
+                    saveAsImage: {}//保存当前漏斗图
+                }
+            },
+			
+            xAxis: {
+				type: 'category',
+				name: '商家id',
+				nameGap: 20,
+				axisLabel: {  
+					show: true,
+					interval:0,
+                    rotate:45  //倾斜的程度
+                },
+                
+                data: dataAxis
+
+            },			
+            yAxis: {		
+				type: 'value',
+				name: '销量',
+				nameGap: 20},
+			
+            series: [{
+                name: '商品销量前十',
+                type: 'bar',
+				// 实现数字展示在柱状图
+				itemStyle: {
+							normal: {
+								label: {
+									show: true, //开启显示
+									position: 'top', //在上方显示
+									textStyle: { //数值样式
+										color: '#e79951',
+										fontSize: 16
+									}
+								}
+							}
+						},
+
+                data: dataValue
+            }]
+        };
+
+		item_chart.setOption(option2);
+	})
+</script>
+
+
+<script type="text/javascript">
+
+		
+	$.getJSON("/static/result3.json", function(data){
+		
+
+	    var name = []
+		var value = []
+		$.each(data, function(key, val){
+			name.push(val["_1"]);
+			value.push({
+				"value": val["_2"],
+				"name": val["_1"]
+			})
+		});
+		dataAxis = Object.values(name);
+        dataValue = Object.values(value);
+		var user_chart = echarts.init(document.getElementById('top_10_user_box'), "macarons");
+
+	
+		//指定图表的配置项和数据
+		var option3 = {
+            title: {
+                text: '商品销量前十统计图',
+				top: 20,
+                x: "center"
+            },
+            tooltip: {//数据视图
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c}件"
+            },
+			toolbox: {//还原数据
+                feature: {
+                    dataView: {
+                        readOnly: false
+                    },
+                    restore: {},
+                    saveAsImage: {}//保存当前漏斗图
+                }
+            },
+			
+            xAxis: {
+				type: 'category',
+				name: '用户id',
+				nameGap: 20,
+				axisLabel: {  
+					show: true,
+					interval:0,
+                    rotate:45  //倾斜的程度
+                },
+                
+                data: dataAxis
+
+            },			
+            yAxis: {		
+				type: 'value',
+				name: '购物数目',
+				nameGap: 20},
+			
+            series: [{
+                name: '用户购买商品数量前十统计图',
+                type: 'bar',
+				// 实现数字展示在柱状图
+				itemStyle: {
+							normal: {
+								label: {
+									show: true, //开启显示
+									position: 'top', //在上方显示
+									textStyle: { //数值样式
+										color: '#e79951',
+										fontSize: 16
+									}
+								}
+							}
+						},
+
+                data: dataValue
+            }]
+        };
+
+		user_chart.setOption(option3);
+	})
+</script>
+
+
+<script type="text/javascript">
+
+		
+	$.getJSON("/static/result4.json", function(data){
+		
+
+	    var name = []
+		var value = []
+		$.each(data, function(key, val){
+			name.push(val["_1"]);
+			value.push({
+				"value": val["_2"],
+				"name": val["_1"]
+			})
+		});
+		dataAxis = Object.values(name);
+        dataValue = Object.values(value);
+		var data_chart = echarts.init(document.getElementById('buy_order_by_data_box'), "macarons");
+
+	
+		//指定图表的配置项和数据
+		var option4 = {
+            title: {
+                text: '11月25日至12月3日平台商品销量统计图',
+				top: 20,
+                x: "center"
+            },
+            tooltip: {//数据视图
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c}件"
+            },
+			toolbox: {//还原数据
+                feature: {
+                    dataView: {
+                        readOnly: false
+                    },
+                    restore: {},
+                    saveAsImage: {}//保存当前漏斗图
+                }
+            },
+			
+            xAxis: {
+				type: 'category',
+				name: '时期',
+				nameGap: 20,
+				axisLabel: {  
+					show: true,
+					interval:0,
+                    rotate:45  //倾斜的程度
+                },
+                
+                data: dataAxis
+
+            },			
+            yAxis: {		
+				type: 'value',
+				name: '商品销量',
+				nameGap: 20},
+			
+            series: [{
+                name: '用户购买商品数量前十统计图',
+                type: 'line',
+				markPoint: {
+							data: [
+								{
+									type: 'max', 
+									name: '最大值'
+								},
+								{
+									type: 'min', 
+									name: '最小值'
+								}
+							]
+				},
+				markLine: {
+							data: [
+								{
+									type: 'average', 
+									name: '平均值'
+								}
+							]
+				},
+                data: dataValue
+            }]
+        };
+
+		data_chart.setOption(option4);
+	})
+</script>
+
+
+</html>
