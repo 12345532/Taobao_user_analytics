@@ -1,0 +1,19 @@
+[+0.00s] DEBUG: simple-scan.vala:2015: Starting simple-scan 42.0, PID=4862
+[+0.00s] DEBUG: unsetenv() is not thread-safe and should not be used after threads are created
+[+0.01s] DEBUG: Trying to initialize portal
+[+0.10s] DEBUG: app-window.vala:1975: Loading state from /home/pby/.config/simple-scan/state
+[+0.10s] WARNING: scanner.vala:1740: Unknown ScanType: . Please report this error.
+[+0.10s] DEBUG: app-window.vala:1954: Restoring window to 600x400 pixels
+[+0.12s] DEBUG: scanner.vala:1620: sane_init () -> SANE_STATUS_GOOD
+[+0.12s] DEBUG: scanner.vala:1626: SANE version 1.1.1
+[+0.12s] DEBUG: scanner.vala:1687: Requesting redetection of scan devices
+[+0.12s] DEBUG: scanner.vala:863: Processing request
+[+0.27s] DEBUG: app-window.vala:2051: Saving state to /home/pby/.config/simple-scan/state
+[+0.41s] DEBUG: app-window.vala:2051: Saving state to /home/pby/.config/simple-scan/state
+[+2.35s] DEBUG: autosave-manager.vala:201: Deleting autosave records
+[+2.35s] WARNING: autosave-manager.vala:214: Failed to delete autosaves: Error opening directory “/home/pby/.cache/simple-scan/autosaves”: No such file or directory
+[+2.35s] DEBUG: scanner.vala:1808: Stopping scan thread
+[+9.74s] DEBUG: scanner.vala:348: sane_get_devices () -> SANE_STATUS_GOOD
+[+9.74s] DEBUG: scanner.vala:863: Processing request
+[+9.74s] DEBUG: scanner.vala:1819: sane_exit ()
+[+9.75s] CRITICAL: app_window_set_scan_devices: assertion 'self != NULL' failed

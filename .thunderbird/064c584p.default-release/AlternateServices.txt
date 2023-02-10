@@ -1,0 +1,2 @@
+https:autoconfig.thunderbird.net:443:.::3	0	19398	https:autoconfig.thunderbird.net:443:autoconfig.thunderbird.net:443::n:1676097147:h3:y:1676010745:n::|n:y:
+https:live.thunderbird.net:443:.::3	0	19398	https:live.thunderbird.net:443:live.thunderbird.net:443::n:1676097146:h3:y:1676010745:n::|n:y:

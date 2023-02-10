@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <application-state>
   <context id="">
-    <application id="org.gnome.Nautilus.desktop" score="6" last-seen="1676008404"/>
-    <application id="org.gnome.Terminal.desktop" score="547" last-seen="1676008458"/>
+    <application id="apport-gtk.desktop" score="0" last-seen="1676010742"/>
+    <application id="simple-scan.desktop" score="1" last-seen="1676010771"/>
+    <application id="org.gnome.Nautilus.desktop" score="79" last-seen="1676012366"/>
+    <application id="org.gnome.Terminal.desktop" score="992" last-seen="1676012366"/>
+    <application id="yelp.desktop" score="0" last-seen="1676010739"/>
+    <application id="thunderbird.desktop" score="0" last-seen="1676010748"/>
   </context>
 </application-state>
